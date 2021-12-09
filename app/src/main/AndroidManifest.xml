@@ -40,6 +40,8 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".MapsActivity" />
         <activity android:name=".BluetoothActivity" />
+        <activity android:name=".LedBluetoothActivity" />
+        <activity android:name=".BeamActivity" />
     </application>
 
 </manifest>

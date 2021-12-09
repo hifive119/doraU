@@ -6,6 +6,8 @@ import android.bluetooth.BluetoothSocket;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -42,6 +44,7 @@ public class BluetoothActivity extends AppCompatActivity {
     private int pariedDeviceCount;
     private Button dialog;
 
+    private Button backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,11 @@ public class BluetoothActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bluetooth);
 
         textViewReceive = findViewById(R.id.textView_receive);
+        backButton = findViewById(R.id.back_btn);
+
+        backButton.setOnClickListener(view1 -> {
+            finish();
+        });
 
         // 블루투스 활성화하기
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter(); // 블루투스 어댑터를 디폴트 어댑터로 설정
@@ -95,7 +103,7 @@ public class BluetoothActivity extends AppCompatActivity {
         else {
             // 디바이스를 선택하기 위한 다이얼로그 생성
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("페어링 되어있는 블루투스 디바이스 목록");
+            builder.setTitle("Bluetooth List");
             // 페어링 된 각각의 디바이스의 이름과 주소를 저장
 
             List<String> list = new ArrayList<>();
@@ -215,10 +223,20 @@ public class BluetoothActivity extends AppCompatActivity {
 
     public void DialogClick(View view) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("경고창").setMessage("파손 위험이 감지 되었습니다!");
-        AlertDialog alertDialog = builder.create();
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_custom, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+        builder.setView(dialogView);
+
+        final AlertDialog alertDialog = builder.create();
         alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        Button ok_btn = dialogView.findViewById(R.id.ok_btn);
+        ok_btn.setOnClickListener(v -> {
+            Toast.makeText(getApplicationContext(), "확인 되었습니다.", Toast.LENGTH_LONG).show();
+            alertDialog.cancel();
+        });
     }
 }
 
